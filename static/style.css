@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+
+h1 {
+    color: #007bff;
+}
+
+select, button {
+    margin-top: 10px;
+    padding: 10px;
+}
