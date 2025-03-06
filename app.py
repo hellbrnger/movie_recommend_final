@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import pickle
 import requests
+import gzip
+import os
 
 
 # Function to fetch movie poster
@@ -44,10 +46,19 @@ def recommend(movie):
 movies_dict = pickle.load(open('movie_dict.pkl', "rb"))
 movies = pd.DataFrame(movies_dict)
 
+# Load similarity matrix from a compressed file
+similarity = None
+if os.path.exists('similarity.pkl.gz'):
+    with gzip.open('similarity.pkl.gz', 'rb') as f:
+        similarity = pickle.load(f)
+elif os.path.exists('similarity.pkl'):  # Fallback if .gz is missing
+    with open('similarity.pkl', 'rb') as f:
+        similarity = pickle.load(f)
+else:
+    st.error("Error: similarity.pkl.gz or similarity.pkl file not found!")
+
 # Streamlit UI
 st.title("Movie Recommender System")
-
-similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 selected_movie_name = st.selectbox(
     "Select a movie:",
